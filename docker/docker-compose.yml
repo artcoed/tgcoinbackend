@@ -1,0 +1,35 @@
+﻿services:
+  db:
+    image: postgres:16
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: tgcoinbackend
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  app:
+    image: tgcoinbackend:latest
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    environment:
+      DATABASE_URL: postgres://postgres:postgres@db:5432/tgcoinbackend
+      PORT: 3000
+      TELEGRAM_WEB_APP_URL: https://your-web-app-url.com  # Replace with actual URL
+    depends_on:
+      db:
+        condition: service_healthy
+    command: >
+      sh -c "ls -la /app/.gmrc /app/migrations && npm run migrate && node dist/index.js"
+
+volumes:
+  pgdata:
