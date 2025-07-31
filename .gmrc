@@ -1,4 +1,0 @@
-﻿{
-  "connectionString": "postgres://postgres:postgres@db:5432/tgcoinbackend",
-  "migrationsFolder": "./migrations"
-}

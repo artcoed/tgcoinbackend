@@ -1,4 +1,6 @@
-﻿services:
+﻿version: '3.8'
+
+services:
   db:
     image: postgres:16
     restart: unless-stopped
@@ -17,7 +19,9 @@
       retries: 5
 
   app:
-    image: tgcoinbackend:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
     restart: unless-stopped
     ports:
       - "3000:3000"
@@ -28,8 +32,5 @@
     depends_on:
       db:
         condition: service_healthy
-    command: >
-      sh -c "ls -la /app/.gmrc /app/migrations && npm run migrate && node dist/index.js"
-
 volumes:
   pgdata:

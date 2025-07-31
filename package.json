@@ -6,7 +6,7 @@
   "scripts": {
     "build": "tsc && mkdir -p dist/i18n && cpy 'src/i18n/*.ftl' 'dist/i18n/'",
     "start": "node dist/index.js",
-    "migrate": "graphile-migrate run",
+    "migrate": "npx knex migrate:up",
     "generate-types": "kysely-codegen --dialect postgres --url $DATABASE_URL --out-file src/db/types.ts",
     "dev": "NODE_ENV=development ts-node src/index.ts"
   },
@@ -23,6 +23,7 @@
     "dotenv": "^17.2.1",
     "grammy": "^1.37.0",
     "graphile-migrate": "^1.4.1",
+    "knex": "^3.1.0",
     "kysely": "^0.28.3",
     "kysely-codegen": "^0.18.5",
     "pg": "^8.16.3",
